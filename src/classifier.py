@@ -13,7 +13,7 @@ except ImportError:
     GUROBI_IMPORTED = False
 
 
-from src.kernel import Kernel, SumKernel
+from kernel import Kernel, SumKernel
 
 
 class Classifier():

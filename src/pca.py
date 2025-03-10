@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.linalg import eigh 
-from src.kernel import Kernel
+from kernel import Kernel
 
 class PCA():
 

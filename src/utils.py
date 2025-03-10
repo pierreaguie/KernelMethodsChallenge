@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from typing import Tuple
 
-from src.classifier import Classifier
+from classifier import Classifier
 
 
 def accuracy(y_true : np.ndarray, y_pred : np.ndarray) -> float:
