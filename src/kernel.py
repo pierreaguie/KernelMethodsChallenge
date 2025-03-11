@@ -92,16 +92,27 @@ class SpectrumKernel(Kernel):
         self.k = k
         self.kmers = [''.join(x) for x in product('ACGT', repeat=k)]
         self.kmer2idx = {kmer: i for i, kmer in enumerate(self.kmers)}
-        self.seq2phi = {}        # Stores the feature vector for each sequence
-
+        
+        # If k is small, we evaluate kernels thorugh numpy dot product. If not, we use pre-indexation to only sum up non-zero features.
+        self.largek = self.k > 8
+        # For small ks, self.seq2phi is {sequence : numpy feature vector}
+        # For large ks, self.seq2phi is {sequence : {kmer : count} dict} 
+        self.seq2phi = {}        
 
     def __call__(self, X : np.ndarray, Y : np.ndarray) -> np.ndarray:
         self.save_phi(X)
         self.save_phi(Y)
-        X_w = np.array([self.seq2phi[seq] for seq in X])
-        Y_w = np.array([self.seq2phi[seq] for seq in Y])
-        K = X_w @ Y_w.T
-        return K
+        if not self.largek:
+            X_w = np.array([self.seq2phi[seq] for seq in X])
+            Y_w = np.array([self.seq2phi[seq] for seq in Y])
+            K = X_w @ Y_w.T
+            return K
+        else:
+            K = np.zeros((len(X), len(Y)))
+            for i in range(len(X)):
+                for j in range(len(Y)):
+                    K[i, j] = sum([self.seq2phi[X[i]][kmer] * self.seq2phi[Y[j]].get(kmer, 0) for kmer in self.seq2phi[X[i]]])
+            return K
     
     def norm(self, X : np.ndarray) -> np.ndarray:
         self.save_phi(X)
@@ -116,11 +127,22 @@ class SpectrumKernel(Kernel):
         """
         for seq in X:
             if seq not in self.seq2phi:
-                w = np.zeros(len(self.kmers))
-                for i in range(len(seq) - self.k + 1):
-                    kmer = seq[i:i+self.k]
-                    w[self.kmer2idx[kmer]] += 1
-                self.seq2phi[seq] = w
+                if not self.largek:
+                    w = np.zeros(len(self.kmers))
+                    for i in range(len(seq) - self.k + 1):
+                        kmer = seq[i:i+self.k]
+                        w[self.kmer2idx[kmer]] += 1
+                    self.seq2phi[seq] = w
+                else:
+                    w = {}
+                    for i in range(len(seq) - self.k + 1):
+                        kmer = seq[i:i+self.k]
+                        if kmer in w:
+                            w[kmer] += 1
+                        else:
+                            w[kmer] = 1
+                    self.seq2phi[seq] = w
+
 
 
 
