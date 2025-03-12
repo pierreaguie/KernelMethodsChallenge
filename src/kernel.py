@@ -116,7 +116,13 @@ class SpectrumKernel(Kernel):
     
     def norm(self, X : np.ndarray) -> np.ndarray:
         self.save_phi(X)
-        return np.linalg.norm([self.seq2phi[seq] for seq in X], axis = 1)
+        if self.largek:
+            norm = np.zeros(len(X))
+            for i in range(len(X)):
+                norm[i] = sum([self.seq2phi[X[i]][kmer]**2 for kmer in self.seq2phi[X[i]]])
+            return np.sqrt(norm)
+        else:
+            return np.linalg.norm([self.seq2phi[seq] for seq in X], axis = 1)
 
     def save_phi(self, X : np.ndarray):
         """ 

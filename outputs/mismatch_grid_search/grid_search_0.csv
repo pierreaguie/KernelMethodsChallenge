@@ -35,3 +35,9 @@ k,m,C,score_mean,score_std
 8,2,0.1,0.5355,0.0402
 8,2,1.0,0.6285,0.0276
 8,2,10.0,0.6105,0.0107
+k,m,C,score_mean,score_std
+k,m,C,score_mean,score_std
+k,m,C,score_mean,score_std
+9,0,0.1,0.5115,0.0157
+9,0,1.0,0.6000,0.0217
+9,0,10.0,0.5850,0.0127

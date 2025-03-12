@@ -36,8 +36,8 @@ def grid_search(X : np.ndarray, y : np.ndarray,
 if __name__ == "__main__":
     np.random.seed(42)
 
-    k_grid = [3, 5, 7, 8]
-    m_grid = [0, 1, 2]
+    k_grid = [9]
+    m_grid = [0]
     C_grid = [0.1, 1., 10.]
 
     for idx in [0, 1, 2]:
