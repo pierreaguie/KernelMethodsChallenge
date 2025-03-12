@@ -1,6 +1,6 @@
 # Data Challenge - Kernel methods for Machine Learning
 
-Repository for Pierre Aguié's submission to the "Kernel Methods for Machine Learning" course Data Challenge. The task was to use kernel-based methods to perform binary classification on DNA sequences, to predict whether a DNA sequence is a binding site to a specific transcription factor. The final submission achieved a score of 69.3%.
+Repository for Pierre Aguié's submission to the "Kernel Methods for Machine Learning" course Data Challenge. The task was to use kernel-based methods to perform binary classification on DNA sequences, to predict whether a DNA sequence is a binding site to a specific transcription factor. The final submission achieved a score of 68.2%.
 
 ## Usage
 
